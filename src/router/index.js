@@ -12,6 +12,8 @@ import { useUserStore } from '@/stores/userStore';
 import ParkDetailsView from '@/views/parks/ParkDetailsView.vue';
 import TripDetailsView from '@/views/trips/TripDetailsView.vue';
 import TripListingsView from '@/views/trips/TripListingsView.vue';
+import ExcursionsDetailsView from '@/views/excursions/ExcursionsDetailsView.vue';
+import ExcursionListingsView from '@/views/excursions/ExcursionListingsView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -104,6 +106,24 @@ const router = createRouter({
                     },
                 },
                 // excursions
+                {
+                    path: '/excursion',
+                    name: 'excursion',
+                    components: {
+                        leftBar: SidebarView,
+                        centerBar: ExcursionsDetailsView,
+                        // rightBar: ,
+                    },
+                },
+                {
+                    path: '/excursions',
+                    name: 'excursions',
+                    components: {
+                        leftBar: SidebarView,
+                        centerBar: ExcursionListingsView,
+                        // rightBar: ,
+                    },
+                },
             ]
         },
         // {

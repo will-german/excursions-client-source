@@ -6,6 +6,7 @@
     const { label, name, title, required, multiple, data } = defineProps({
         label: String,
         name: String,
+        title: String,
         required: String,
         multiple: String,
         data: Array,
@@ -108,6 +109,8 @@
         border: 0;
 
         outline: 0;
+
+        text-transform: capitalize;
     }
 
     // TODO: ==> Field Input Visual Validation

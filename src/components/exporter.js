@@ -12,6 +12,7 @@ export { default as Toast } from './Toast.vue';
 
 export { default as ParkCard } from './ParkCard.vue';
 export { default as TripCard } from './TripCard.vue';
+export { default as ExcursionCard } from './ExcursionCard.vue';
 // ================== //
 // #endregion         //
 // ================== //

@@ -177,15 +177,15 @@ export const useUserStore = defineStore('userStore', () => {
 
             }
         } else {
-            if (response.stauts === 400) {
+            if (response.status === 400) {
                 throw new Error("Bad Request: Could not delete user.");
             }
 
-            if (response.stauts === 401) {
+            if (response.status === 401) {
                 throw new Error("Unauthorized: Could not delete user.");
             }
 
-            if (response.stauts === 500) {
+            if (response.status === 500) {
                 throw new Error("Internal Server Error: Could not delete user.");
             }
         }

@@ -124,8 +124,79 @@ export const useTripStore = defineStore('tripStore', () => {
         return response;
     }
 
-    async function getTripDataById() {
-        // do shit
+    async function updateTrip(id, args) {
+        const data = { ...args };
+        const token = userStore.getBearerToken;
+
+        const url = `${base_url}/trip/${id}`;
+
+        const options = {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.ok) {
+            if (response.status === 200) {
+                await getTripsData();
+            }
+        } else {
+            if (response.status === 400) {
+                throw new Error("Bad Request: Could not update trip.");
+            }
+
+            if (response.status === 401) {
+                throw new Error("Unauthorized: Could not update trip.");
+            }
+
+            if (response.status === 500) {
+                throw new Error("Internal Server Error: Could not update trip.");
+            }
+        }
+
+        return response;
+    }
+
+    async function deleteTrip(id, args) {
+        const data = { ...args };
+        const token = userStore.getBearerToken;
+
+        const url = `${base_url}/trip/${id}`;
+
+        const options = {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.ok) {
+            if (response.status === 200) {
+                await getTripsData();
+            }
+        } else {
+            if (response.status === 400) {
+                throw new Error("Bad Request: Could not delete trip.");
+            }
+
+            if (response.status === 401) {
+                throw new Error("Unauthorized: Could not delete trip.");
+            }
+
+            if (response.status === 500) {
+                throw new Error("Internal Server Error: Could not delete trip.");
+            }
+        }
+
+        return response;
+
     }
 
     async function setTripDetails(args) {
@@ -133,11 +204,11 @@ export const useTripStore = defineStore('tripStore', () => {
         tripDetails.value = data;
     }
 
-    async function deleteTrip() {
-        // do shit
+    function $reset() {
+        trips.value = [];
+        tripDetails.value = '';
+        newTrip.value = '';
     }
-
-    function $reset() { }
 
     // --------------- //
     // #endregion      //
@@ -159,6 +230,8 @@ export const useTripStore = defineStore('tripStore', () => {
         // actions
         createTrip,
         getTripsData,
+        updateTrip,
+        deleteTrip,
         setTripDetails,
         $reset,
     };

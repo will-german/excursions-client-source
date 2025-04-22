@@ -61,6 +61,10 @@
         if (response.ok) {
             if (response.status === 201) {
                 // TODO: Toast User
+
+                router.push({
+                    name: 'trips'
+                });
             }
         } else {
             // throw errors

@@ -2,38 +2,45 @@
     import { ref, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
     import { useUserStore } from '@/stores/userStore';
-    import { useParkStore } from '@/stores/parkStore';
     import { useTripStore } from '@/stores/tripStore';
-    import { QueryBuilder } from '@/scripts/exporter';
+    import { useExcursionStore } from '@/stores/excursionStore';
     import { FormInput, FormTextarea, FormButton, FontAwesomeIcon } from '@/components/exporter';
+    import FormSelect from '@/components/FormSelect.vue';
 
     const router = useRouter();
 
     const userStore = useUserStore();
-    const parkStore = useParkStore();
     const tripStore = useTripStore();
+    const excursionStore = useExcursionStore();
 
-    const queryBuilder = new QueryBuilder();
+    const hostedTrips = ref([]);
 
-    const trip = ref({});
+    const excursion = ref({});
+    const trips = ref([]);
+    const participants = ref([]);
 
-    const name = ref('');
-    const description = ref('');
-    const startDate = ref('');
-    const endDate = ref('');
+    const excursionName = ref('');
+    const excursionDescription = ref('');
+    const excursionTrips = ref([]);
+    const excursionParticipants = ref([]);
 
     const isEditing = ref(false);
     const inputs = ref([]);
+    const select = ref();
+    const buttons = ref([]);
 
     onMounted(async () => {
-        trip.value = tripStore.getTripDetails;
+        await tripStore.getTripsData();
+        hostedTrips.value = tripStore.getTrips;
 
-        name.value = trip.value.name;
-        description.value = trip.value.description;
+        excursion.value = excursionStore.getExcursionDetails;
+        trips.value = excursion.value.trips;
+        participants.value = excursion.value.participants;
 
-        // may require transforms to get date to populate as expected
-        startDate.value = trip.value.startDate;
-        endDate.value = trip.value.endDate;
+        console.log(excursion.value);
+
+        excursionName.value = excursion.value.name;
+        excursionDescription.value = excursion.value.description;
 
         const elements = document.querySelectorAll('.field_input');
 
@@ -42,12 +49,7 @@
         });
 
         inputs.value = elements;
-
-        // trip.value = await AggregateTrip(trip.value);
-        // await AggregateTrip(trip.value);
     });
-
-    // TODO: Aggregate data to show a more robust trip
 
     function ToggleEditing() {
         isEditing.value = !isEditing.value;
@@ -56,77 +58,38 @@
             inputs.value.forEach(input => {
                 input.removeAttribute('disabled');
             });
+
+            trips.value = hostedTrips.value;
         } else {
             inputs.value.forEach(input => {
                 input.setAttribute('disabled', '');
             });
 
-            name.value = trip.value.name;
-            description.value = trip.value.description;
-            startDate.value = trip.value.startDate;
-            endDate.value = trip.value.endDate;
+            excursionName.value = excursion.value.name;
+            excursionDescription.value = excursion.value.description;
+            excursionTrips.value = excursion.value.trips;
+            trips.value = excursion.value.trips;
         }
     }
 
-    async function updateTrip() {
+    async function updateExcursion() {
         const data = {
-            "name": name.value,
-            "description": description.value,
-            "startDate": startDate.value,
-            "endDate": endDate.value,
+            // bullshit
         };
 
-        for (const [key, value] of Object.entries(trip.value._id, data)) {
+        for (const [key, value] of Object.entries(excursion.value._id, data)) {
             if (!value) {
                 delete data[key];
             }
         }
-
-        let response = await tripStore.updateTrip(trip.value._id, data);
-
-        if (response.status === 200) {
-            console.log("Trip Updated");
-
-            // TODO: Toast User
-
-            if (data.name) {
-                trip.value.name = data.name;
-            }
-
-            if (data.description) {
-                trip.value.description = data.description;
-            }
-
-            if (data.startDate) {
-                trip.value.startDate = data.startDate;
-            }
-
-            if (data.endDate) {
-                trip.value.endDate = data.endDate;
-            }
-        } else {
-            // TODO: Toast User
-        }
     }
 
-    async function deleteTrip() {
-        if (true) {
-            console.log("PROG BLOCK ON ACCOUNT DELETE");
-            return;
-        }
+    async function deleteExcursion() { }
 
-        let response = await tripStore.deleteTrip();
+    async function inviteUser() {
 
-        if (response.status === 200) {
-            console.log("Deleted Trip");
-
-            // TODO: Toast User
-
-            router.push({
-                "name": "trips",
-            });
-        }
     }
+
 </script>
 
 <template>
@@ -134,8 +97,8 @@
          class="grid">
         <main class="">
             <section class="section section--header">
-                <h1 class="title">Trip Details</h1>
-                <p>Manage trip details.</p>
+                <h1 class="title">Excursion Details</h1>
+                <p>Manage excursion and participant details.</p>
             </section>
             <section class="section section--body">
                 <form action=""
@@ -145,34 +108,44 @@
                                type="text"
                                name="name"
                                required="true"
-                               v-model="name">
+                               v-model="excursionName">
                     </FormInput>
 
                     <FormTextarea label="Description"
                                   type="text"
                                   name="description"
                                   required="true"
-                                  v-model="description">
+                                  v-model="excursionDescription">
                     </FormTextarea>
 
-                    <div class="trip_dates grid">
-                        <FormInput label="Start Date"
-                                   type="datetime-local"
-                                   name="startDate"
-                                   required="true"
-                                   v-model="startDate">
-                        </FormInput>
+                    <FormSelect label="Trips"
+                                name="trips"
+                                required="true"
+                                multiple="true"
+                                :data="trips"
+                                v-model="excursionTrips">
+                    </FormSelect>
 
-                        <FormInput label="End Date"
-                                   type="datetime-local"
-                                   name="endDate"
-                                   required="true"
-                                   v-model="endDate">
-                        </FormInput>
+                    <div class="participants">
+                        <p class="participants_label">Participants</p>
+                        <ul class="participants_list"
+                            role="list">
+                            <li v-for="participant in participants">
+                                <div class="participant_card">
+                                    <p>{{ participant.firstName }} {{ participant.lastName }}</p>
+                                    <button type="button"
+                                            class="participant_button">
+                                        <font-awesome-icon icon="fa-solid fa-minus" />
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
+
                 </form>
             </section>
         </main>
+
         <aside class="profile_actions">
             <ul class="grid"
                 role="list">
@@ -211,10 +184,21 @@
                 </li>
                 <li id="delete"
                     v-show="!isEditing">
-                    <FormButton text="Delete Trip"
+                    <FormButton text="Delete Excursion"
                                 type="button"
                                 customClasses="button--dark--solid--square"
-                                @click.prevent.stop="deleteTrip()">
+                                @click.prevent.stop="deleteExcursion()">
+                        <template #prefix-icon>
+                            <font-awesome-icon icon="fa-solid fa-trash" />
+                        </template>
+                    </FormButton>
+                </li>
+                <li id="invite"
+                    v-show="!isEditing">
+                    <FormButton text="Invite Participant"
+                                type="button"
+                                customClasses="button--dark--solid--square"
+                                @click.prevent.stop="inviteUser()">
                         <template #prefix-icon>
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </template>
@@ -222,6 +206,7 @@
                 </li>
             </ul>
         </aside>
+
     </div>
 </template>
 
@@ -229,6 +214,55 @@
        scoped>
 
     @use "@/sass/abstracts" as *;
+
+    // #region participants
+    .participants_label {
+        --label-color: var(--primary-400);
+        color: var(--label-color, #{$text-inverse});
+        font-weight: $fw-semibold;
+        text-transform: capitalize;
+        padding-bottom: $padding-xs;
+    }
+
+    .participant_card {
+        --_padding: #{$form-input-padding};
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        padding-block: calc(var(--_padding) / 1.5);
+        padding-inline: var(--_padding);
+
+        background: $bg-inverse;
+        color: $text-inverse;
+
+        text-transform: capitalize;
+
+        border-width: $form-input-border-width;
+        border-style: $form-input-border-style;
+        border-color: var(--_border-color);
+        border-radius: $form-input-border-radius;
+
+        box-shadow: $form-input-box-shadow;
+    }
+
+    .participant_button {
+        width: max-content;
+        aspect-ratio: 1 / 1;
+
+        background: var(--semantic-error-400);
+        color: $text;
+
+        padding: $padding-xs;
+
+        border: $border-width-default $border-style-default var(--semantic-error-400);
+        border-radius: $border-radius-default;
+
+        cursor: pointer;
+    }
+
+    // #endregion
 
     #wrapper {
         --gap: calc(#{$gap-xl} * 2);
@@ -248,13 +282,9 @@
 
     .form {
         --gap: #{$gap-xl};
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(1, minmax(0, 1fr));
 
         padding-block: $padding-xl;
-    }
-
-    .form > :where(*:nth-child(1), *:nth-child(2)) {
-        grid-column: 1 / span 2;
     }
 
     .form > .field {
@@ -291,4 +321,13 @@
         --_border-color: var(--semantic-error-400);
     }
 
+    .profile_actions #invite [class*="button"] {
+        --_bg: var(--semantic-warn-400);
+        --_color: #{$text-inverse};
+        --_border-color: var(--semantic-warn-400);
+    }
+
+    .excursion_trips {}
+
+    .excursion_participants {}
 </style>

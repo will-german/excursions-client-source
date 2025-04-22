@@ -69,7 +69,7 @@
                     <ul class="nav_list flex--col"
                         role="list">
                         <li>
-                            <RouterLink to=""
+                            <RouterLink to="excursions"
                                         class="nav_link">
                                 <font-awesome-icon icon="fa-solid fa-car-side" />
                                 <span class="flex">Excursions <span
