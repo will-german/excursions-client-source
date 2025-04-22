@@ -110,11 +110,6 @@
     }
 
     async function deleteTrip() {
-        if (true) {
-            console.log("PROG BLOCK ON ACCOUNT DELETE");
-            return;
-        }
-
         let response = await tripStore.deleteTrip();
 
         if (response.status === 200) {
