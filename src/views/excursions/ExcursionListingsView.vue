@@ -25,6 +25,7 @@
 
     onMounted(async () => {
         await GetExcursions();
+        await userStore.getUsersData();
 
         excursions.value.forEach(excursion => {
             if (excursion.host[0]._id === user.value._id) {

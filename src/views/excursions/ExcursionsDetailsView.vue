@@ -1,10 +1,10 @@
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, useTemplateRef } from 'vue';
     import { useRouter } from 'vue-router';
     import { useUserStore } from '@/stores/userStore';
     import { useTripStore } from '@/stores/tripStore';
     import { useExcursionStore } from '@/stores/excursionStore';
-    import { FormInput, FormTextarea, FormButton, FontAwesomeIcon } from '@/components/exporter';
+    import { FormInput, FormTextarea, FormButton, FontAwesomeIcon, Modal } from '@/components/exporter';
     import FormSelect from '@/components/FormSelect.vue';
 
     const router = useRouter();
@@ -12,6 +12,11 @@
     const userStore = useUserStore();
     const tripStore = useTripStore();
     const excursionStore = useExcursionStore();
+
+    const user = ref(userStore.getUser);
+    const users = ref(userStore.getUsers);
+
+    const friendId = ref('');
 
     const hostedTrips = ref([]);
 
@@ -25,6 +30,8 @@
     const excursionParticipants = ref([]);
 
     const isEditing = ref(false);
+    const isHost = ref(false);
+
     const inputs = ref([]);
     const select = ref();
     const buttons = ref([]);
@@ -37,19 +44,29 @@
         trips.value = excursion.value.trips;
         participants.value = excursion.value.participants;
 
-        console.log(excursion.value);
-
         excursionName.value = excursion.value.name;
         excursionDescription.value = excursion.value.description;
+
+        users.value = userStore.getUsers;
+
+        if (excursion.value.host[0]._id === user.value._id) {
+            isHost.value = true;
+        }
 
         const elements = document.querySelectorAll('.field_input');
 
         elements.forEach(element => {
             element.setAttribute('disabled', '');
+
+            if (element.closest('.modal') !== null) {
+                element.removeAttribute('disabled');
+            }
         });
 
         inputs.value = elements;
     });
+
+    const addParticipantModal = useTemplateRef('add-participant-modal');
 
     function ToggleEditing() {
         isEditing.value = !isEditing.value;
@@ -74,7 +91,9 @@
 
     async function updateExcursion() {
         const data = {
-            // bullshit
+            "name": excursionName.value,
+            "description": excursionDescription.value,
+            "trips": excursionTrips.value, // this gives all undefined due to a v-bind issue
         };
 
         for (const [key, value] of Object.entries(excursion.value._id, data)) {
@@ -82,11 +101,149 @@
                 delete data[key];
             }
         }
+
+        let response = await excursionStore.updateExcursion(excursion.value._id, data);
+
+        if (response.status === 200) {
+            if (data.name) {
+                excursion.value.name = data.name;
+            }
+
+            if (data.description) {
+                excursion.value.description = data.description;
+            }
+
+            if (data.trips) {
+                excursion.value.trips = data.trips;
+            }
+        } else {
+            // errors
+        }
     }
 
-    async function deleteExcursion() { }
+    async function deleteExcursion() {
+        let id = excursion.value._id;
+
+        let response = await excursionStore.deleteExcursion(id, {});
+
+        if (response.ok) {
+            if (response.status === 200) {
+                router.push({
+                    name: 'excursions',
+                });
+            }
+        }
+    }
 
     async function inviteUser() {
+        let id = excursion.value._id;
+        const token = userStore.getBearerToken;
+        const url = `https://excursions-api-server.azurewebsites.net/share/excursion/${id}`;
+
+        const data = {
+            "friendId": friendId.value,
+        };
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.ok) {
+            if (response.status === 201) {
+                console.log(response);
+            }
+        } else {
+            if (response.status === 400) {
+                throw new Error("Bad Request: Could not invite user.");
+            }
+
+            if (response.status === 500) {
+                throw new Error("Internal Server Error: Could not invite user.");
+            }
+        }
+
+        // return response;
+
+    }
+
+    async function leaveExcursion() {
+        let id = excursion.value._id;
+        const token = userStore.getBearerToken;
+        const url = `https://excursions-api-server.azurewebsites.net/leave/excursions/${id}`;
+
+        const options = {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.ok) {
+            if (response.status === 200) {
+                router.push({
+                    name: "excursions",
+                });
+            }
+        } else {
+            if (response.stauts === 400) {
+                throw new Error({ "Bad Request": "Could not leave Excursion." });
+            }
+
+            if (response.stauts === 401) {
+                throw new Error({ "Unauthorized": "Could not leave Excursion." });
+            }
+
+            if (response.stauts === 403) {
+                throw new Error({ "Forbidden": "Could not leave Excursion." });
+            }
+
+            if (response.stauts === 500) {
+                throw new Error({ "Internal Server Error": "Could not leave Excursion." });
+            }
+        }
+
+        return response;
+    }
+
+    async function removeUser(participantId) {
+        let id = excursion.value._id;
+        const token = userStore.getBearerToken;
+
+        const url = `https://excursions-api-server.azurewebsites.net/remove/excursions/${id}`;
+
+        const data = {
+            "participantId": participantId
+        };
+
+        const options = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.ok) {
+            if (response.status === 200) {
+                console.log(response);
+            }
+        } else {
+            // errors
+        }
+
+        return response;
 
     }
 
@@ -95,6 +252,7 @@
 <template>
     <div id="wrapper"
          class="grid">
+
         <main class="">
             <section class="section section--header">
                 <h1 class="title">Excursion Details</h1>
@@ -122,6 +280,7 @@
                                 name="trips"
                                 required="true"
                                 multiple="true"
+                                user="true"
                                 :data="trips"
                                 v-model="excursionTrips">
                     </FormSelect>
@@ -134,7 +293,9 @@
                                 <div class="participant_card">
                                     <p>{{ participant.firstName }} {{ participant.lastName }}</p>
                                     <button type="button"
-                                            class="participant_button">
+                                            class="participant_button"
+                                            v-if="isHost"
+                                            @click.prevent.stop="removeUser(participant._id)">
                                         <font-awesome-icon icon="fa-solid fa-minus" />
                                     </button>
                                 </div>
@@ -148,7 +309,8 @@
 
         <aside class="profile_actions">
             <ul class="grid"
-                role="list">
+                role="list"
+                v-if="isHost">
                 <li id="edit"
                     v-show="!isEditing">
                     <FormButton text="Enable Editing"
@@ -165,7 +327,7 @@
                     <FormButton text="Save Changes"
                                 type="button"
                                 customClasses="button--dark--solid--square"
-                                @click.prevent.stop="updateTrip()">
+                                @click.prevent.stop="updateExcursion()">
                         <template #prefix-icon>
                             <font-awesome-icon icon="fa-solid fa-floppy-disk" />
                         </template>
@@ -198,13 +360,61 @@
                     <FormButton text="Invite Participant"
                                 type="button"
                                 customClasses="button--dark--solid--square"
-                                @click.prevent.stop="inviteUser()">
+                                @click.prevent.stop="addParticipantModal.openModal()">
                         <template #prefix-icon>
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </template>
                     </FormButton>
                 </li>
             </ul>
+
+            <ul class="grid"
+                role="list"
+                v-else>
+                <li id="delete">
+                    <FormButton text="Leave Excursion"
+                                type="button"
+                                customClasses="button--dark--solid--square"
+                                @click.prevent.stop="leaveExcursion()">
+                        <template #suffix-icon>
+                            <font-awesome-icon icon="fa-solid fa-person-walking-dashed-line-arrow-right" />
+                        </template>
+                    </FormButton>
+                </li>
+            </ul>
+
+            <Modal ref="add-participant-modal">
+                <template #header>
+                    <p class="modal_heading subheading">Invite Participants</p>
+                </template>
+                <template #main>
+                    <div class="modal_form">
+                        <FormSelect label="participants"
+                                    name="participants"
+                                    required="true"
+                                    multiple="false"
+                                    user="true"
+                                    :data="users"
+                                    v-model="friendId">
+
+                        </FormSelect>
+                    </div>
+                </template>
+                <template #footer>
+                    <div class="modal-actions">
+                        <FormButton text="Invite User"
+                                    type="button"
+                                    customClasses="button--dark--solid--square"
+                                    @click.stop.prevent="inviteUser()">
+                        </FormButton>
+                        <FormButton text="Cancel"
+                                    type="button"
+                                    customClasses="button--outline--square"
+                                    @click.stop.prevent="addParticipantModal.closeModal()">
+                        </FormButton>
+                    </div>
+                </template>
+            </Modal>
         </aside>
 
     </div>
@@ -214,6 +424,39 @@
        scoped>
 
     @use "@/sass/abstracts" as *;
+
+    // #region Modal
+
+    .modal_form {
+        display: grid;
+        gap: $gap;
+    }
+
+    .modal_dates {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .modal_heading.subheading {
+        --_color: #{$text-inverse};
+        color: var(--_color);
+        font-weight: $fw-bold;
+    }
+
+    .modal_content {
+        gap: $gap;
+    }
+
+    .modal-actions {
+        display: flex;
+        flex-direction: row;
+        gap: $gap;
+    }
+
+    .modal-actions > button:last-child {
+        --_color: #{$text-inverse};
+    }
+
+    // #endregion
 
     // #region participants
     .participants_label {

@@ -10,6 +10,7 @@ export const useUserStore = defineStore('userStore', () => {
     // ------------- //
 
     const user = ref({});
+    const users = ref([]);
     const bearerToken = ref({});
     const isAuthenticated = ref(false);
 
@@ -25,6 +26,10 @@ export const useUserStore = defineStore('userStore', () => {
 
     const getUser = computed(() => {
         return user.value;
+    });
+
+    const getUsers = computed(() => {
+        return users.value;
     });
 
     const getBearerToken = computed(() => {
@@ -113,6 +118,41 @@ export const useUserStore = defineStore('userStore', () => {
             }
             if (response.stauts === 500) {
                 throw new Error("Internal Server Error: Could not get user.");
+            }
+        }
+
+        return response;
+    }
+
+    async function getUsersData() {
+        const token = bearerToken.value;
+
+        const url = `${base_url}/users`;
+
+        const options = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.ok) {
+            if (response.status === 200) {
+                const data = await response.json();
+                console.log(data);
+                users.value = data;
+            }
+        } else {
+            if (response.status === 400) {
+                throw new Error("Bad Request: Could not get users.");
+            }
+            if (response.status === 401) {
+                throw new Error("Unauthorized: Could not get users.");
+            }
+            if (response.stauts === 500) {
+                throw new Error("Internal Server Error: Could not get users.");
             }
         }
 
@@ -277,11 +317,13 @@ export const useUserStore = defineStore('userStore', () => {
     return {
         // state
         user,
+        users,
         bearerToken,
         isAuthenticated,
 
         // getters
         getUser,
+        getUsers,
         getBearerToken,
         getIsAuthenticated,
 
@@ -289,6 +331,7 @@ export const useUserStore = defineStore('userStore', () => {
         createUser,
         updateUser,
         getUserData,
+        getUsersData,
         deleteUser,
         signUserIn,
         signUserOut,

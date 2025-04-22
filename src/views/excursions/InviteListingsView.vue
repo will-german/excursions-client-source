@@ -35,13 +35,18 @@
                 const data = await response.json();
 
                 let invites = data.excursionInvites;
+                let inc = [];
+                let out = [];
                 invites.forEach(invite => {
                     if (invite.sender[0]._id === user.value._id) {
-                        outgoing.value.push(invite);
+                        out.push(invite);
                     } else {
-                        incoming.value.push(invite);
+                        inc.push(invite);
                     }
                 });
+
+                incoming.value = inc;
+                outgoing.value = out;
             }
         } else {
             if (response.status === 400) {
@@ -61,10 +66,10 @@
 
     async function AcceptInvite(inviteId) {
         const token = userStore.getBearerToken;
-        const url = `https://excursions-api-server.azurewebsites.net/share/excursions/{inviteId}`;
+        const url = `https://excursions-api-server.azurewebsites.net/share/excursions/${inviteId}`;
 
         const data = {
-            isAccepted: true,
+            "isAccepted": true,
         };
 
         const options = {
@@ -99,10 +104,10 @@
 
     async function DeclineInvite(inviteId) {
         const token = userStore.getBearerToken;
-        const url = `https://excursions-api-server.azurewebsites.net/share/excursions/{inviteId}`;
+        const url = `https://excursions-api-server.azurewebsites.net/share/excursions/${inviteId}`;
 
         const data = {
-            isAccepted: false,
+            "isAccepted": false,
         };
 
         const options = {
@@ -137,7 +142,34 @@
 
     async function RevokeInvite(inviteId) {
         const token = userStore.getBearerToken;
-        const url = `https://excursions-api-server.azurewebsites.net/share/excursions/{inviteId}`;
+        const url = `https://excursions-api-server.azurewebsites.net/share/excursions/${inviteId}`;
+
+        const options = {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        let response = await fetch(url, options);
+
+        if (response.ok) {
+            if (response.status === 200) {
+                await GetInvites();
+            }
+        } else {
+            if (response.status === 400) {
+                throw new Error("Bad Request: Could not handle invite.");
+            }
+
+            if (response.status === 401) {
+                throw new Error("Unauthorized: Could not handle invite.");
+            }
+
+            if (response.status === 500) {
+                throw new Error("Internal Server Error: Could not handle invite.");
+            }
+        }
 
     }
 

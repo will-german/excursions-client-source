@@ -178,7 +178,7 @@ export const useExcursionStore = defineStore('excursionStore', () => {
 
         if (response.ok) {
             if (response.status === 200) {
-                await getTripsData();
+                await getExcursionsData();
             }
         } else {
             if (response.status === 400) {

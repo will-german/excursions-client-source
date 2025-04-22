@@ -3,17 +3,19 @@
     import { ref, defineProps, defineModel, watchEffect } from 'vue';
     import { FontAwesomeIcon } from './exporter';
 
-    const { label, name, title, required, multiple, data } = defineProps({
+    const { label, name, title, required, multiple, user, data } = defineProps({
         label: String,
         name: String,
         title: String,
         required: String,
         multiple: String,
+        user: String,
         data: Array,
     });
 
     const isRequired = ref(false);
     const isMultiple = ref(false);
+    const isUser = ref(false);
 
     watchEffect(() => {
         if (required === 'true') {
@@ -22,6 +24,10 @@
 
         if (multiple === 'true') {
             isMultiple.value = true;
+        }
+
+        if (user === 'true') {
+            isUser.value = true;
         }
     });
 
@@ -37,10 +43,24 @@
                     :name="name"
                     :required="isRequired"
                     :multiple="isMultiple"
-                    v-model="model">
+                    v-model="model"
+                    v-if="isUser">
+                <option v-for="item in data"
+                        :value="item._id">
+                    {{ item.name }} {{ item.title }}
+                    {{ item.firstName }} {{ item.lastName }}
+                </option>
+            </select>
+            <select class="field_input"
+                    :name="name"
+                    :required="isRequired"
+                    :multiple="isMultiple"
+                    v-model="model"
+                    v-else>
                 <option v-for="item in data"
                         :value="item.id">
                     {{ item.name }} {{ item.title }}
+                    {{ item.firstName }} {{ item.lastName }}
                 </option>
             </select>
         </div>
