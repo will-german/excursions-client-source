@@ -21,10 +21,10 @@
         // TODO: Validate final form values before API call
 
         const data = {
-            // email: email.value,
-            // password: password.value,
-            email: "joe@user.com",
-            password: "Testing1234!"
+            email: email.value,
+            password: password.value,
+            // email: "joe@user.com",
+            // password: "Testing1234!"
         };
 
         let response = await userStore.signUserIn(data);
