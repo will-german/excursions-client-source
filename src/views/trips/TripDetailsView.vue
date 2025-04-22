@@ -281,8 +281,8 @@
 
     .profile_actions #delete [class*="button"],
     .profile_actions #cancel [class*="button"] {
-        --_bg: transparent;
-        --_color: var(--semantic-error-400);
+        --_bg: var(--semantic-error-400);
+        --_color: var(--neutral-050);
         --_border-color: var(--semantic-error-400);
     }
 

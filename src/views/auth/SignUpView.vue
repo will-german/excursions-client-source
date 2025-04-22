@@ -3,7 +3,7 @@
     import { useRouter } from 'vue-router';
     import { useUserStore } from '@/stores/userStore';
 
-    import { FormInput, FontAwesomeIcon } from '@/components/exporter';
+    import { FormInput, FormButton, FontAwesomeIcon } from '@/components/exporter';
 
     const router = useRouter();
 
@@ -52,7 +52,7 @@
                 // TODO: Prefetch Park Summaries
 
                 router.push({
-                    name: 'main'
+                    name: 'search'
                 });
             } else {
                 if (response.status === 400) {
