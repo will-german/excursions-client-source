@@ -95,7 +95,7 @@
                     <ul class="nav_list flex--col"
                         role="list">
                         <li>
-                            <RouterLink to=""
+                            <RouterLink to="invites"
                                         class="nav_link">
                                 <font-awesome-icon icon="fa-solid fa-envelope" />
                                 <span class="flex">Invites <span class="nav_link_count">{{ inviteCount }}</span></span>

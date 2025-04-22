@@ -14,6 +14,7 @@ import TripDetailsView from '@/views/trips/TripDetailsView.vue';
 import TripListingsView from '@/views/trips/TripListingsView.vue';
 import ExcursionsDetailsView from '@/views/excursions/ExcursionsDetailsView.vue';
 import ExcursionListingsView from '@/views/excursions/ExcursionListingsView.vue';
+import InviteListingsView from '@/views/excursions/InviteListingsView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -121,6 +122,16 @@ const router = createRouter({
                     components: {
                         leftBar: SidebarView,
                         centerBar: ExcursionListingsView,
+                        // rightBar: ,
+                    },
+                },
+                // invites
+                {
+                    path: '/invites',
+                    name: 'invites',
+                    components: {
+                        leftBar: SidebarView,
+                        centerBar: InviteListingsView,
                         // rightBar: ,
                     },
                 },
