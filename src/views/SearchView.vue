@@ -177,4 +177,8 @@
         width: 100%;
     }
 
+    :deep(.field > label) {
+        display: none;
+    }
+
 </style>

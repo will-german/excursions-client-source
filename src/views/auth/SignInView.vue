@@ -35,8 +35,8 @@
                 // TODO: Toast User
 
                 router.push({
-                    // name: 'search',
-                    name: 'main'
+                    name: 'search',
+                    // name: 'main'
                 });
             } else {
                 if (response.status === 400) {

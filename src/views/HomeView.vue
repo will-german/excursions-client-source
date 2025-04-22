@@ -66,8 +66,8 @@
             TODO: ==> PREFETCH DATA ON SIGNIN
             TODO: Add (silent) video media as background image
         -->
-        <h1 class="title">Excursions Client</h1>
-        <p class="subheading">Here is some content</p>
+        <h1 class="title">USA <span>Excursions</span></h1>
+        <p class="subheading">Visit to your favorite national parks, your own way.</p>
         <div class="actions flex--row--align-center--justify-center">
             <RouterLink to="sign-up"
                         class="button--light-outline--round">
@@ -94,6 +94,14 @@
 
     .actions {
         padding-block: $padding-lg;
+    }
+
+    .title > span {
+        color: var(--primary-400);
+    }
+
+    .subheading {
+        max-width: 25ch;
     }
 
 </style>
