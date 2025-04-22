@@ -1,0 +1,19 @@
+@use "../abstracts/" as *;
+
+:where([class*="container"]) {
+    // --_padding: #{$padding};
+    --_padding: 0;
+    --_max-width: 120rem;
+
+    width: min(100% - var(--_padding), var(--_max-width));
+    min-height: 100vh;
+
+    padding-block: var(--_padding);
+    padding-inline: var(--_padding);
+    margin-inline: auto;
+}
+
+:where([class*="container"][class*="--main"]) {
+    padding-block: var(--_padding);
+    padding-inline: var(--_padding);
+}

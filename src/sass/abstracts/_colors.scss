@@ -1,0 +1,117 @@
+@use "sass:map";
+
+// ========================= //
+// #region abstracts/_colors //
+// ========================= //
+
+// TODO:
+// Write a function to calculate the curve in colors from 400-900
+// Write a function to calculate the curve in colors from 400-050
+
+$_teal-050: #F0FCF9;
+$_teal-100: #C6F7E9;
+$_teal-200: #8EEDD1;
+$_teal-300: #5FE3C0;
+$_teal-400: #2DCCA7;
+$_teal-500: #17B897;
+$_teal-600: #079A82;
+$_teal-700: #048271;
+$_teal-800: #016457;
+$_teal-900: #004440;
+
+$_grey-050: #F7F7F7;
+$_grey-100: #E1E1E1;
+$_grey-200: #CFCFCF;
+$_grey-300: #B1B1B1;
+$_grey-400: #9E9E9E;
+$_grey-500: #7E7E7E;
+$_grey-600: #626262;
+$_grey-700: #515151;
+$_grey-800: #3B3B3B;
+$_grey-900: #222222;
+$_grey-950: #000000;
+
+$_yellow-050: #FFFBEA;
+$_yellow-100: #FFF3C4;
+$_yellow-200: #FCE588;
+$_yellow-300: #FADB5F;
+$_yellow-400: #F7C948;
+$_yellow-500: #F0B429;
+$_yellow-600: #DE911D;
+$_yellow-700: #CB6E17;
+$_yellow-800: #B44D12;
+$_yellow-900: #8D2B0B;
+
+$_red-050: #FFE3E3;
+$_red-100: #FFBDBD;
+$_red-200: #FF9B9B;
+$_red-300: #F86A6A;
+$_red-400: #EF4E4E;
+$_red-500: #E12D39;
+$_red-600: #CF1124;
+$_red-700: #AB091E;
+$_red-800: #8A041A;
+$_red-900: #610316;
+
+$color-theme-map: (
+    "primary": ("050": $_teal-050,
+        "100": $_teal-100,
+        "200": $_teal-200,
+        "300": $_teal-300,
+        "400": $_teal-400,
+        "500": $_teal-500,
+        "600": $_teal-600,
+        "700": $_teal-700,
+        "800": $_teal-800,
+        "900": $_teal-900,
+    ),
+    "neutral": ("050": $_grey-050,
+        "100": $_grey-100,
+        "200": $_grey-200,
+        "300": $_grey-300,
+        "400": $_grey-400,
+        "500": $_grey-500,
+        "600": $_grey-600,
+        "700": $_grey-700,
+        "800": $_grey-800,
+        "900": $_grey-900,
+        "950": $_grey-950,
+    ),
+    "semantic-success": ("050": $_teal-050,
+        "100": $_teal-100,
+        "200": $_teal-200,
+        "300": $_teal-300,
+        "400": $_teal-400,
+        "500": $_teal-500,
+        "600": $_teal-600,
+        "700": $_teal-700,
+        "800": $_teal-800,
+        "900": $_teal-900,
+    ),
+    "semantic-warn": ("050": $_yellow-100,
+        "100": $_yellow-100,
+        "200": $_yellow-200,
+        "300": $_yellow-300,
+        "400": $_yellow-400,
+        "500": $_yellow-500,
+        "600": $_yellow-600,
+        "700": $_yellow-700,
+        "800": $_yellow-800,
+        "900": $_yellow-900,
+    ),
+    "semantic-error": ("050": $_red-100,
+        "100": $_red-100,
+        "200": $_red-200,
+        "300": $_red-300,
+        "400": $_red-400,
+        "500": $_red-500,
+        "600": $_red-600,
+        "700": $_red-700,
+        "800": $_red-800,
+        "900": $_red-900,
+    ),
+);
+
+// ========================= //
+// #endregion                //
+// ========================= //

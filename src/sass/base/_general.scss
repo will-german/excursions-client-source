@@ -1,0 +1,337 @@
+@use "../abstracts/" as *;
+
+// ===================== //
+// #region base/_general //
+// ===================== //
+
+:where(body) {
+    background: $bg;
+    color: $text;
+
+    // font-family: $ff-paragraph;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: $fw-default;
+    font-style: normal;
+    font-size: $fs-paragraph;
+}
+
+:where(div#app) {
+    position: relative;
+}
+
+:where(main) {
+    min-height: 100vh;
+}
+
+// ------------- //
+// #region links //
+// ------------- //
+
+:where(a:not([class]),
+    [class*="link"]) {
+    $_color: $link-text;
+
+    color: $_color;
+    text-decoration: none;
+
+    border-bottom: $link-border-width $link-border-style $_color;
+
+    cursor: pointer;
+}
+
+:where(a:not([class]):is(:hover, :focus),
+    .link:is(:hover, :focus)) {
+    color: $link-text-interactive;
+}
+
+// ----- [ Default ] ----- //
+
+:where(a[class*="button"]) {
+    --_bg: transparent;
+    --_color: #{$button-text};
+    --_padding: #{$button-padding};
+    --_gap: #{$button-gap};
+    --_border-color: var(--_bg);
+
+    display: flex;
+    flex-direction: row;
+    gap: var(--_gap);
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--_bg);
+    color: var(--_color);
+
+    padding-block: calc(var(--_padding) / 1.5);
+    padding-inline: var(--_padding);
+
+    font-size: $button-font-size;
+    font-weight: $button-font-weight;
+
+    text-decoration: none;
+
+    border-width: $button-border-width;
+    border-style: $button-border-style;
+    border-color: var(--_border-color);
+    border-radius: 0;
+
+    cursor: pointer;
+}
+
+:where(a[class*="button"]:is(:hover, :focus)) {}
+
+// ----- [ Color ] ----- //
+
+:where(a[class*="button"][class*="--dark"]) {
+    --_bg: #{$button-bg};
+    --_color: #{$button-text};
+    --_border-color: #{$button-bg};
+}
+
+:where(a[class*="button"][class*="--dark"]:is(:hover, :focus)) {}
+
+:where(a[class*="button"][class*="--light"]) {
+    --_bg: #{$button-bg-inverse};
+    --_color: #{$button-text-inverse};
+    --_border-color: #{$button-bg-inverse};
+}
+
+:where(a[class*="button"][class*="--light"]:is(:hover, :focus)) {}
+
+// ----- [ Weight ] ----- //
+
+:where(a[class*="--solid"]) {
+    --_border-color: transparent;
+}
+
+:where(a[class*="button"][class*="--solid"]:is(:hover, :focus)) {}
+
+:where(a[class*="button"][class*="--outline"]) {
+    --_bg: transparent;
+    --_border-color: #{$button-bg};
+}
+
+:where(a[class*="button"][class*="--outline"]:is(:hover, :focus)) {}
+
+// ----- [ Shape ] ----- //
+
+:where(a[class*="button"][class*="--square"]) {
+    border-radius: #{$button-border-radius};
+}
+
+:where(a[class*="button"][class*="--square"]:is(:hover, :focus)) {}
+
+:where(a[class*="button"][class*="--round"]) {
+    border-radius: #{$button-border-radius--round};
+
+}
+
+:where(a[class*="button"][class*="--round"]:is(:hover, :focus)) {}
+
+// ----- [ Combos ] ----- //
+
+// TODO: Solve this section with sass:color lightness & custom function
+
+:where(a[class*="button"][class*="--dark--solid"]),
+:where(a[class*="button"][class*="--solid--dark"]) {
+    --_bg: #{$button-bg};
+    --_color: #{$button-text};
+    --_border-color: #{$button-bg};
+}
+
+:where(a[class*="button"][class*="--dark--solid"]:is(:hover, :focus),
+    [class*="button"][class*="--solid--dark"]:is(:hover, :focus)) {}
+
+:where(a[class*="button"][class*="--dark--outline"],
+    [class*="button"][class*="--outline--dark"]) {
+    --_bg: transparent;
+    --_color: #{$button-text};
+    --_border-color: #{$button-bg-inverse};
+}
+
+:where(a[class*="button"][class*="--dark--outline"]:is(:hover, :focus),
+    [class*="button"][class*="--outline--dark"]:is(:hover, :focus)) {}
+
+
+:where(a[class*="button"][class*="--light--solid"],
+    [class*="button"][class*="--solid--light"]) {
+    --_bg: #{$button-bg-inverse};
+    --_color: #{$button-text-inverse};
+    --_border-color: #{$button-bg-inverse};
+}
+
+:where(a[class*="button"][class*="--light--solid"]:is(:hover, :focus),
+    [class*="button"][class*="--solid--light"]:is(:hover, :focus)) {}
+
+:where(a[class*="button"][class*="--light--outline"],
+    [class*="button"][class*="--outline--light"]) {
+    --_bg: transparent;
+    --_color: #{$button-text};
+    --_border-color: #{$button-bg-inverse};
+}
+
+:where(a[class*="button"][class*="--light--outline"]:is(:hover, :focus),
+    [class*="button"][class*="--outline--light"]:is(:hover, :focus)) {}
+
+// ------------- //
+// #endregion    //
+// ------------- //
+
+// --------------- //
+// #region buttons //
+// --------------- //
+
+:where(button:not([class])) {
+    --_bg: transparent;
+    --_color: #{$button-text};
+    --_padding: #{$button-padding};
+    --_gap: #{$button-gap};
+    --_border-color: var(--_bg);
+
+    display: flex;
+    flex-direction: row;
+    gap: var(--_gap);
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--_bg);
+    color: var(--_color);
+
+    padding-block: calc(var(--_padding) / 1.5);
+    padding-inline: var(--_padding);
+
+    font-size: $button-font-size;
+    font-weight: $button-font-weight;
+
+    text-decoration: none;
+
+    border-width: $button-border-width;
+    border-style: $button-border-style;
+    border-color: var(--_border-color);
+    border-radius: 0;
+
+    cursor: pointer;
+}
+
+:where(button:not([class]):is(:hover, :focus)) {}
+
+// --------------- //
+// #endregion      //
+// --------------- //
+
+// ------------- //
+// #region forms //
+// ------------- //
+
+:where(form:not([class]), [class*="form"]) {
+    display: flex;
+
+    gap: $form-gap;
+}
+
+// ------------- //
+// #endregion    //
+// ------------- //
+
+// -------------- //
+// #region labels //
+// -------------- //
+
+:where(label:not([class])) {
+    background: $label-bg;
+    color: $label-text;
+
+    font-size: $label-font-size;
+    font-weight: $label-font-weight;
+
+    text-transform: capitalize;
+}
+
+// -------------- //
+// #endregion     //
+// -------------- //
+
+// -------------- //
+// #region inputs //
+// -------------- //
+
+:where(input:not([class])) {
+    --_bg: #{$input-bg};
+    --_color: #{$input-text};
+    --_padding: #{$input-padding};
+    --_border-color: var(--_bg);
+
+    background: var(--_bg);
+    color: var(--_color);
+
+    padding-block: calc(var(--_padding) / 1.5);
+    padding-inline: var(--_padding);
+
+    border-width: $input-border-width;
+    border-style: $input-border-style;
+    border-color: var(--_border-color);
+    border-radius: $input-border-radius;
+
+    box-shadow: $input-box-shadow;
+}
+
+:where(input:not([class])::placeholder) {
+    color: $input-placeholder-text;
+}
+
+// -------------- //
+// #endregion     //
+// -------------- //
+
+// ------------------ //
+// #region typography //
+// ------------------ //
+
+:where([class*="title"]) {
+    color: $title-text;
+
+    font-size: $title-font-size;
+    font-weight: $title-font-weight;
+
+    line-height: $title-line-height;
+
+    // text-transform: capitalize;
+    text-wrap: balance;
+}
+
+:where([class*="heading"]) {
+    color: $heading-text;
+
+    font-size: $heading-font-size;
+    font-weight: $heading-font-weight;
+
+    line-height: $heading-line-height;
+
+    text-wrap: balance;
+
+    // text-transform: capitalize;
+}
+
+:where([class*="subheading"]) {
+    color: $subheading-text;
+
+    font-size: $subheading-font-size;
+    font-weight: $subheading-font-weight;
+
+    line-height: $subheading-line-height;
+
+    text-wrap: balance;
+
+    // text-transform: capitalize;
+}
+
+// ------------------ //
+// #endregion         //
+// ------------------ //
+
+// ===================== //
+// #endregion            //
+// ===================== //

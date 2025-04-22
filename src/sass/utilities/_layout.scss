@@ -1,0 +1,106 @@
+@use "../abstracts/" as *;
+
+// ========================= //
+// #region utilities/_layout //
+// ========================= //
+
+// Grid
+
+:where([class*="grid"]) {
+    --_gap: var(--gap, 1em);
+
+    display: grid;
+    gap: var(--_gap);
+}
+
+:where([class*="grid"][class*="--items-center"]) {
+    place-items: center;
+}
+
+:where([class*="grid"][class*="--content-center"]) {
+    place-content: center;
+}
+
+// Flex
+
+:where([class*="flex"]) {
+    --_gap: var(--gap, 1em);
+
+    display: flex;
+    column-gap: var(--_gap);
+    row-gap: calc(var(--_gap) / 2);
+}
+
+:where([class*="flex"][class*="--col"]) {
+    flex-direction: column;
+}
+
+:where([class*="flex"][class*="--row"]) {
+    flex-direction: row;
+}
+
+:where([class*="flex"][class*="--col-reverse"]) {
+    flex-direction: column-reverse;
+}
+
+:where([class*="flex"][class*="--row-reverse"]) {
+    flex-direction: row-reverse;
+}
+
+:where([class*="flex"][class*="--align-start"]) {
+    align-items: flex-start;
+}
+
+:where([class*="flex"][class*="--align-center"]) {
+    align-items: center;
+}
+
+:where([class*="flex"][class*="--align-end"]) {
+    align-items: flex-end;
+}
+
+:where([class*="flex"][class*="--justify-start"]) {
+    justify-content: flex-start;
+}
+
+:where([class*="flex"][class*="--justify-center"]) {
+    justify-content: center;
+}
+
+:where([class*="flex"][class*="--justify-end"]) {
+    justify-content: flex-end;
+}
+
+:where([class*="flex"][class*="--space-around"]) {
+    justify-content: space-around;
+}
+
+:where([class*="flex"][class*="--space-evenly"]) {
+    justify-content: space-evenly;
+}
+
+:where([class*="flex"][class*="--space-between"]) {
+    justify-content: space-between;
+}
+
+// Flow
+
+:where([class*="flow"]) {
+    --_gap: var(--gap, 1em);
+}
+
+:where([class*="flow"]) > *:where(:not(:first-child)) {
+    --_gap: inherit;
+}
+
+:where([class*="flow"][class*="--vertical"]) {
+    margin-top: var(--_gap);
+}
+
+:where([class*="flow"][class*="--horizontal"]) {
+    margin-left: var(--_gap);
+}
+
+// ========================= //
+// #endregion                //
+// ========================= //

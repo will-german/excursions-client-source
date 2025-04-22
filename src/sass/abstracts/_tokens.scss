@@ -1,0 +1,240 @@
+// ========================= //
+// #region abstracts/_tokens //
+// ========================= //
+
+// -------------------------- //
+// #region _tokens/contextual //
+// -------------------------- //
+
+
+$bg: var(--neutral-900);
+$bg-inverse: var(--neutral-050);
+
+$text: var(--neutral-050);
+$text-inverse: var(--neutral-900);
+
+// TODO: font-family related tokens
+
+$fs-title: var(--font-size-900);
+$fs-heading: var(--font-size-800);
+$fs-subheading: var(--font-size-600);
+$fs-paragraph: var(--font-size-400);
+$fs-small: var(--font-size-300);
+
+$fw-light: var(--font-weight-200);
+$fw-default: var(--font-weight-400);
+$fw-semibold: var(--font-weight-700);
+$fw-bold: var(--font-weight-900);
+
+// $lh-extranarrow: var(--line-height-100);
+$lh-narrow: var(--line-height-200);
+$lh-default: var(--line-height-400);
+$lh-wide: var(--line-height-600);
+
+$ls-narrow: var(--letter-spacing-200);
+$ls-default: var(--letter-spacing-400);
+$ls-wide: var(--letter-spacing-600);
+
+$size-xs: var(--size-4);
+$size-sm: var(--size-8);
+$size: var(--size-16);
+$size-lg: var(--size-28);
+$size-xl: var(--size-36);
+
+$gap-xs: $size-xs;
+$gap-sm: $size-sm;
+$gap: $size;
+$gap-lg: $size-lg;
+$gap-xl: $size-xl;
+
+$margin-xs: $size-xs;
+$margin-sm: $size-sm;
+$margin: $size;
+$margin-lg: $size-lg;
+$margin-xl: $size-xl;
+
+$padding-xs: $size-xs;
+$padding-sm: $size-sm;
+$padding: $size;
+$padding-lg: $size-lg;
+$padding-xl: $size-xl;
+
+$border-width-default: 2px;
+$border-width-wide: 4px;
+
+$border-style-default: solid;
+$border-radius-default: 4px;
+
+$box-shadow-default: 2px 4px 8px 0px rgba(0, 0, 0, 0.25);
+
+// -------------------------- //
+// #endregion                 //
+// -------------------------- //
+
+// ----------------------- //
+// #region _tokens/widgets //
+// ----------------------- //
+
+// #region Body
+
+// #endregion
+
+// #region Links
+$link-text: var(--primary-400);
+$link-text-interactive: var(--primary-200);
+
+$link-border-width: $border-width-default;
+$link-border-style: $border-style-default;
+// #endregion
+
+// #region Buttons
+$button-bg: var(--neutral-950);
+$button-text: $text;
+
+$button-bg-inverse: $bg-inverse;
+$button-text-inverse: $text-inverse;
+
+$button-gap: $gap;
+$button-padding: $padding;
+
+$button-font-size: $fs-paragraph;
+$button-font-weight: $fw-semibold;
+
+$button-border-width: $border-width-default;
+$button-border-style: $border-style-default;
+
+$button-border-radius: $border-radius-default;
+$button-border-radius--round: 100vw;
+// #endregion
+
+// #region Forms
+$form-gap: $gap-xl;
+// #endregion
+
+// #region Form Fields
+$form-input-gap: $gap-sm;
+
+$form-input-bg: $bg-inverse;
+$form-input-text: $text-inverse;
+$form-input-placeholder-text: var(--neutral-600);
+
+$form-input-gap: $gap;
+$form-input-body-gap: 0;
+$form-input-padding: $padding;
+
+$form-input-border-width: $border-width-default;
+$form-input-border-style: $border-style-default;
+
+$form-input-border-radius: $border-radius-default;
+
+$form-input-box-shadow: $box-shadow-default;
+
+$form-input-icon-size: $fs-paragraph;
+$form-icon-padding: $form-input-padding;
+// #endregion
+
+// #region Labels
+$label-bg: transparent;
+$label-text: $text-inverse;
+$label-font-size: $fs-paragraph;
+$label-font-weight: $fw-semibold;
+// #endregion
+
+// #region Inputs
+$input-bg: $bg-inverse;
+$input-text: $text-inverse;
+$input-placeholder-text: var(--neutral-600);
+
+$input-gap: $gap;
+$input-padding: $padding;
+
+$input-border-width: $border-width-default;
+$input-border-style: $border-style-default;
+
+$input-border-radius: $border-radius-default;
+
+$input-box-shadow: $box-shadow-default;
+// #endregion
+
+// #region Typography
+$title-text: $text;
+$title-font-size: $fs-title;
+$title-font-weight: $fw-bold;
+$title-line-height: $lh-narrow;
+
+$heading-text: $text;
+$heading-font-size: $fs-heading;
+$heading-font-weight: $fw-semibold;
+$heading-line-height: $lh-narrow;
+
+$subheading-text: $text;
+$subheading-font-size: $fs-subheading;
+$subheading-font-weight: $fw-default;
+$subheading-line-height: $lh-narrow;
+// #endregion
+
+// ----------------------- //
+// #endregion              //
+// ----------------------- //
+
+// ---------------------------//
+// #region _tokens/components //
+// ---------------------------//
+
+// #region Header
+$header-nav-gap: $gap-xl;
+
+$header-bg: rgba(255, 255, 255, 0.25);
+$header-text: $text;
+
+$header-padding: $padding-xl;
+
+$header-border-width: $border-width-default;
+$header-border-style: $border-style-default;
+$header-border-color: rgba(255, 255, 255, 0.25);
+$header-border-radius: $border-radius-default;
+$header-box-shadow: $box-shadow-default;
+
+$header-backdrop-filter: blur($size);
+
+
+$nav-link-bg: transparent;
+$nav-link-bg-interactive: var(--neutral-050);
+
+$nav-link-text: $text;
+$nav-link-text-interactive: $text-inverse;
+
+$nav-link-padding: $padding;
+
+$nav-link-border: $border-width-default $border-style-default var(--neutral-050);
+
+// #endregion
+
+// #region Park Card
+// $park-card-gap: calc($gap-xl * 1.5);
+$park-card-gap: $gap;
+$park-card-padding: calc($padding-xl * 2);
+$park-card-border: $border-width-wide $border-style-default var(--neutral-400);
+$park-card-border-interactive: $border-width-wide $border-style-default var(--primary-400);
+$park-card-border-radius: $border-radius-default;
+
+$park-card-name-font-size: $title-font-size;
+
+$park-card-icon-bg: rgba(0, 0, 0, 0.75);
+$park-card-icon-text: var(--primary-400);
+$park-card-icon-padding: $padding-sm;
+$park-card-icon-border: $border-width-default $border-style-default var(--neutral-200);
+$park-card-icon-border-radius: $border-radius-default;
+
+$park-card-link-bg: $bg;
+$park-card-link-bg-gradient: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 25%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 1) 100%);
+$park-card-link-text: $text;
+// #endregion
+
+// ---------------------------//
+// #endregion                 //
+// ---------------------------//
+
+// ---------------------------//
+// #endregion                 //
+// ---------------------------//

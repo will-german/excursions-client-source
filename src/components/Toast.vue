@@ -1,18 +1,12 @@
 <script setup>
-    import { RouterView } from 'vue-router';
 </script>
 
 <template>
-    <RouterView></RouterView>
 </template>
 
 <style lang="scss"
        scoped>
-
+    
     @use '@/sass/abstracts' as *;
-
-    div#app {
-        position: relative;
-    }
-
+    
 </style>
