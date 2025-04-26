@@ -37,7 +37,7 @@
 
             <button type="button"
                     class="field_button grid--items-center"
-                    v-if="isPassword">
+                    v-if="false">
                 <font-awesome-icon icon="fa-solid fa-eye" />
             </button>
         </div>

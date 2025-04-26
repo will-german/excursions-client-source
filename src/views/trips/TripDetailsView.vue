@@ -31,9 +31,11 @@
         name.value = trip.value.name;
         description.value = trip.value.description;
 
-        // may require transforms to get date to populate as expected
-        startDate.value = trip.value.startDate;
-        endDate.value = trip.value.endDate;
+        const start = new Date(trip.value.startDate);
+        const end = new Date(trip.value.endDate);
+
+        startDate.value = start.toISOString().slice(0, 16);
+        endDate.value = end.toISOString().slice(0, 16);
 
         const elements = document.querySelectorAll('.field_input');
 
@@ -63,8 +65,12 @@
 
             name.value = trip.value.name;
             description.value = trip.value.description;
-            startDate.value = trip.value.startDate;
-            endDate.value = trip.value.endDate;
+
+            const start = new Date(trip.value.startDate);
+            const end = new Date(trip.value.endDate);
+
+            startDate.value = start.toISOString().slice(0, 16);
+            endDate.value = end.toISOString().slice(0, 16);
         }
     }
 
@@ -105,12 +111,14 @@
                 trip.value.endDate = data.endDate;
             }
         } else {
-            // TODO: Toast User
+            throw new Error({ Error: 'Failed to update trip.' });
         }
+
+        ToggleEditing();
     }
 
     async function deleteTrip() {
-        let response = await tripStore.deleteTrip();
+        let response = await tripStore.deleteTrip(trip.value._id, {});
 
         if (response.status === 200) {
             console.log("Deleted Trip");
@@ -150,7 +158,7 @@
                                   v-model="description">
                     </FormTextarea>
 
-                    <div class="trip_dates grid">
+                    <div class="trip_dates flex--row">
                         <FormInput label="Start Date"
                                    type="datetime-local"
                                    name="startDate"
@@ -252,10 +260,17 @@
         grid-column: 1 / span 2;
     }
 
-    .form > .field {
+    .form > .field,
+    .form .field {
         --gap: 0;
         // --label-color: #{$text};
         --label-color: var(--primary-400);
+    }
+
+    .trip_dates {
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .profile_actions {

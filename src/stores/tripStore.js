@@ -127,7 +127,6 @@ export const useTripStore = defineStore('tripStore', () => {
     async function updateTrip(id, args) {
         const data = { ...args };
         const token = userStore.getBearerToken;
-
         const url = `${base_url}/trip/${id}`;
 
         const options = {

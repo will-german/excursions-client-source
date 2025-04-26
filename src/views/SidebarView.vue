@@ -18,11 +18,13 @@
     onMounted(async () => {
         user.value = userStore.getUser;
 
-        excursionCount.value = user.value.hostedExcursions.length + user.value.sharedExcursions.length;
+        excursionCount.value = (user.value.hostedExcursions.length + user.value.sharedExcursions.length);
+
+        console.log(user.value.hostedExcursions.length);
 
         tripCount.value = user.value.hostedTrips.length;
 
-        inviteCount.value = user.value.incomingExcursionInvites.length + user.value.outgoingExcursionInvites.length;
+        inviteCount.value = (user.value.incomingExcursionInvites.length + user.value.outgoingExcursionInvites.length);
     });
 
     async function signOut() {
@@ -48,13 +50,13 @@
             -->
             <nav class="nav grid">
                 <div class="nav_section">
-                    <RouterLink to="/main"
+                    <RouterLink to="search"
                                 class="nav_link nav_link--logo">
                         Excursions
                     </RouterLink>
                 </div>
                 <div class="nav_section">
-                    <RouterLink to="/search"
+                    <RouterLink to="search"
                                 class="nav_link">
                         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                         Discover

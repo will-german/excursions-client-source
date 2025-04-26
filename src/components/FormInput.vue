@@ -1,6 +1,6 @@
 <script setup>
 
-    import { ref, defineProps, defineModel, watchEffect } from 'vue';
+    import { ref, defineProps, defineModel, watchEffect, useTemplateRef } from 'vue';
     import { FontAwesomeIcon } from './exporter';
 
     const { label, type, name, required, disabled } = defineProps({
@@ -32,6 +32,18 @@
 
     const model = defineModel();
 
+    const input = useTemplateRef('input');
+
+    function ToggleVisibility() {
+        let type = input.value.getAttribute('type');
+
+        if (type === 'password') {
+            input.value.setAttribute('type', 'text');
+        } else {
+            input.value.setAttribute('type', 'password');
+        }
+    }
+
 </script>
 
 <template>
@@ -47,11 +59,13 @@
                    :placeholder="placeholder"
                    :required="isRequired"
                    :disabled="isDisabled"
-                   v-model="model">
+                   v-model="model"
+                   ref="input">
 
             <button type="button"
                     class="field_button grid--items-center"
-                    v-if="isPassword">
+                    v-if="isPassword"
+                    @click="ToggleVisibility()">
                 <font-awesome-icon icon="fa-solid fa-eye" />
             </button>
         </div>

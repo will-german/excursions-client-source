@@ -93,8 +93,14 @@
         const data = {
             "name": excursionName.value,
             "description": excursionDescription.value,
-            "trips": excursionTrips.value, // this gives all undefined due to a v-bind issue
+            "trips": [],
         };
+
+        if (excursionTrips.value) {
+            excursionTrips.value.forEach(trip => {
+                data.trips.push(trip);
+            });
+        }
 
         for (const [key, value] of Object.entries(excursion.value._id, data)) {
             if (!value) {
@@ -114,11 +120,23 @@
             }
 
             if (data.trips) {
-                excursion.value.trips = data.trips;
+                data.trips.forEach(dataTrip => {
+                    console.log(dataTrip);
+                    hostedTrips.value.forEach(hostedTrip => {
+                        console.log(hostedTrip);
+                        if (dataTrip === hostedTrip._id) {
+                            excursion.value.trips.push(hostedTrip);
+                        }
+                    });
+                });
+
+                // excursion.value.trips = data.trips;
             }
         } else {
             // errors
         }
+
+        ToggleEditing();
     }
 
     async function deleteExcursion() {
@@ -169,7 +187,7 @@
             }
         }
 
-        // return response;
+        addParticipantModal.value.closeModal();
 
     }
 
@@ -285,7 +303,8 @@
                                 v-model="excursionTrips">
                     </FormSelect>
 
-                    <div class="participants">
+                    <div class="participants"
+                         v-if="participants.length > 0">
                         <p class="participants_label">Participants</p>
                         <ul class="participants_list"
                             role="list">

@@ -201,6 +201,7 @@
                                    type="text"
                                    name="name"
                                    placeholder="Trip"
+                                   isPassword="false"
                                    required="true"
                                    v-model="tripName">
                         </FormInput>
@@ -214,12 +215,14 @@
                             <FormInput label="Start Date"
                                        type="datetime-local"
                                        name="startDate"
+                                       isPassword="false"
                                        required="true"
                                        v-model="tripStartDate">
                             </FormInput>
                             <FormInput label="End Date"
                                        type="datetime-local"
                                        name="endDate"
+                                       isPassword="false"
                                        required="true"
                                        v-model="tripEndDate">
                             </FormInput>
@@ -230,6 +233,7 @@
                         <FormInput label="park"
                                    type="text"
                                    name="park"
+                                   isPassword="false"
                                    required="true"
                                    disabled="true"
                                    v-model="tripParkName">
@@ -237,6 +241,7 @@
                         <FormSelect label="campground"
                                     name="campground"
                                     required="true"
+                                    multiple="false"
                                     :data="campgrounds"
                                     v-model="tripCampgroundId"
                                     v-if="campgrounds.length > 0">

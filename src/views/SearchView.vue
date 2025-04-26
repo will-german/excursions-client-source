@@ -5,6 +5,8 @@
     import { useParkStore } from '@/stores/parkStore';
     import { useSearchStore } from '@/stores/searchStore';
 
+    // TODO: Fix "$setup.parks is undefined" error that occurs on occasion. (due to now having any data loaded).
+
     const router = useRouter();
 
     const parkStore = useParkStore();
@@ -97,6 +99,7 @@
                        name="location"
                        placeholder="Yellowstone"
                        required="true"
+                       isPassword="false"
                        v-model="location">
                 <template #icon>
                     <font-awesome-icon icon="fa-solid fa-location-dot" />

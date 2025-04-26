@@ -6,6 +6,8 @@
     import { useExcursionStore } from '@/stores/excursionStore';
     import { ExcursionCard, FormInput, FormTextarea, FormSelect, FormButton, FontAwesomeIcon, Modal } from '@/components/exporter';
 
+    const router = useRouter();
+
     const userStore = useUserStore();
     const tripStore = useTripStore();
     const excursionStore = useExcursionStore();
@@ -68,6 +70,8 @@
         } else {
             // throw errors
         }
+
+        addExcursionModal.value.closeModal();
     }
 
     async function CancelExcursion() {
@@ -145,13 +149,14 @@
                         <FormInput label="name"
                                    type="text"
                                    name="name"
-                                   placeholder="Trip"
+                                   placeholder="Excursion"
+                                   isPassword="false"
                                    required="true"
                                    v-model="excursionName">
                         </FormInput>
                         <FormTextarea label="description"
                                       name="description"
-                                      placeholder="Describe your trip!"
+                                      placeholder="Describe your excursion!"
                                       required="true"
                                       v-model="excursionDescription">
                         </FormTextarea>

@@ -73,6 +73,8 @@ export const useExcursionStore = defineStore('excursionStore', () => {
                 const data = await response.json();
                 excursions.value.push(data.excursion);
                 newExcursion.value = data.excursion;
+
+                await getExcursionsData();
             }
         } else {
             if (response.stauts === 400) {
