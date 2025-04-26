@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted, useTemplateRef } from 'vue';
+    import { ref, onMounted, onUpdated, useTemplateRef } from 'vue';
     import { useRouter } from 'vue-router';
     import { useUserStore } from '@/stores/userStore';
     import { useTripStore } from '@/stores/tripStore';
@@ -40,6 +40,24 @@
         trips.value = tripStore.getTrips;
     });
 
+    onUpdated(async () => {
+        if (excursions.value.length === excursionStore.getExcursions.length) {
+            return;
+        }
+
+        excursions.value = excursionStore.getExcursions;
+
+        excursions.value.forEach(excursion => {
+            if (excursion.host[0]._id === user.value._id) {
+                hosted.value.push(excursion);
+            } else {
+                shared.value.push(excursion);
+            }
+        });
+
+        trips.value = tripStore.getTrips;
+    });
+
     async function GetExcursions() {
         let response = await excursionStore.getExcursionsData();
 
@@ -52,8 +70,14 @@
         const data = {
             name: excursionName.value,
             description: excursionDescription.value,
-            trips: excursionTrips.value,
+            trips: [],
         };
+
+        if (excursionTrips.value) {
+            excursionTrips.value.forEach(trip => {
+                data.trips.push(trip);
+            });
+        }
 
         let response = await excursionStore.createExcursion(data);
 

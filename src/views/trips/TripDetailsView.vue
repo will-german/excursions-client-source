@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, onUpdated } from 'vue';
     import { useRouter } from 'vue-router';
     import { useUserStore } from '@/stores/userStore';
     import { useParkStore } from '@/stores/parkStore';

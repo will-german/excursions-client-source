@@ -1,7 +1,9 @@
 <script setup>
-    import { ref, onMounted, watchEffect } from 'vue';
+    import { ref, onMounted, onUpdated, watchEffect } from 'vue';
     import { RouterLink, useRouter } from 'vue-router';
     import { useUserStore } from '@/stores/userStore';
+    import { useExcursionStore } from '@/stores/excursionStore';
+    import { useTripStore } from '@/stores/tripStore';
     import { resetStores } from '@/composables/ResetStores'; // would have to be a class to work w/ exporter files :/
 
     import { Sidebar, FontAwesomeIcon } from '@/components/exporter';
@@ -11,6 +13,9 @@
     const userStore = useUserStore();
     const user = ref({});
 
+    const excursionStore = useExcursionStore();
+    const tripStore = useTripStore();
+
     const excursionCount = ref();
     const tripCount = ref();
     const inviteCount = ref();
@@ -18,13 +23,25 @@
     onMounted(async () => {
         user.value = userStore.getUser;
 
-        excursionCount.value = (user.value.hostedExcursions.length + user.value.sharedExcursions.length);
+        excursionCount.value = excursionStore.getExcursions.length;
 
-        console.log(user.value.hostedExcursions.length);
-
-        tripCount.value = user.value.hostedTrips.length;
+        tripCount.value = tripStore.getTrips.length;
 
         inviteCount.value = (user.value.incomingExcursionInvites.length + user.value.outgoingExcursionInvites.length);
+    });
+
+    onUpdated(async () => {
+        if (excursionCount.value !== excursionStore.getExcursions.length) {
+            excursionCount.value = excursionStore.getExcursions.length;
+        }
+
+        if (tripCount.value !== tripStore.getTrips.length) {
+            tripCount.value = tripStore.getTrips.length;
+        }
+
+        if (inviteCount.value !== (user.value.incomingExcursionInvites.length + user.value.outgoingExcursionInvites.length)) {
+            inviteCount.value = (user.value.incomingExcursionInvites.length + user.value.outgoingExcursionInvites.length);
+        }
     });
 
     async function signOut() {

@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, onUpdated } from 'vue';
     import { useRouter } from 'vue-router';
     import { useTripStore } from '@/stores/tripStore';
     import { TripCard } from '@/components/exporter';
@@ -10,6 +10,19 @@
 
     onMounted(async () => {
         await GetTrips();
+    });
+
+    onUpdated(async () => {
+        if (trips.value.length === tripStore.getTrips.length) {
+            return;
+        }
+
+        trips.value = tripStore.getTrips;
+
+        trips.value.forEach(trip => {
+            trip.startDate = new Date(trip.startDate);
+            trip.endDate = new Date(trip.endDate);
+        });
     });
 
     async function GetTrips() {

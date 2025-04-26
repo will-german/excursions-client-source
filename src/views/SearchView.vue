@@ -71,6 +71,10 @@
         if (response.status === 200) {
             searchStore.results = response.data.data;
 
+            if (!searchStore.getResults || searchStore.getResults.length === 0) {
+                return;
+            }
+
             router.push({
                 name: 'park-listings'
             });
